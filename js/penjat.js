@@ -3,31 +3,9 @@ let perdudes = 0;
 
 
 
-
-function jugar() {
-
-    let opcio = prompt("Escull el que vols fer: \n 1. Iniciar un joc \n 2. Estadístiques \n 3. Sortir");
-    
-    
-    if (opcio == 1) {
-        penjat();
-    }
-    else if (opcio == 2) {
-        estadistiques();
-    }
-    else if (opcio == 3) {
-        return;
-    }
-    else {
-        console.warn("Has d'introduïr una opció entre 1 i 3"); 
-        jugar();
-    }
-
-}
-
 /* Funció que inicialitza el joc del penjat*/
-function penjat() {
-    
+function novaPartida() {
+
     let paraula = prompt("Introdueix una paraula");
     
     while ( paraula == null || paraula.length < 1 ) {
@@ -42,26 +20,28 @@ function penjat() {
     let utilitzades = "";
     let repetida = false;
 
+    let lletres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     
         for (let i= 0; i < paraula.length; i++){
-            oculta = "-" + oculta;
+            oculta = "_" +" " + oculta;
         }
-        console.log(paraula);
-        console.log (oculta);
 
-        while (!guanyat){
-            let lletra = prompt("Introdueix una lletra").toUpperCase();
+       
+        let p = document.createElement("p");
+        p.innerHTML = oculta;
+        document.body.appendChild(p);
+        
+        let botons = document.getElementById('abecedari'); //agafes el div
+
+        //Creem els botons amb la lletra
+        for (let i= 0; i < lletres.length; i++){
+            botons.innerHTML+= `<button id="${lletres[i]} onclick='clickLletra("${lletres[i]}")'>${lletres[i]}</button>`;
+           
+          
+        }
+        
             
-            if (esUnaLletra(lletra)){}
-                if (lletra.length > 1){
-                    console.warn("Només una lletra");
-                } else if (lletra.length == 0){
-                    console.warn("Introdueix una lletra siusplau");
-                    
-                } else {
-                    
 
-                    
                     if (comprovaLletra(lletra,paraula)){ // comprova que la lletra estigui dins la paraula
                         resultat = EscriuOculta(lletra,paraula,oculta); //escriu el resultat d'haver afegit la lletra, hagi fallat o no
                         oculta = resultat; //modifiquem oculta per a que contingui les lletres que s'han encertat
@@ -83,7 +63,7 @@ function penjat() {
                         if (intents == 0){
                             console.log("Has perdut :(");
                             perdudes++;
-                            break;
+                            
                         
                         }
 
@@ -92,25 +72,16 @@ function penjat() {
 
                     console.log(`Lletres fallades ${fallades}/6: ${utilitzades.toLowerCase()}`);
 
-                }
+                
         }  
         
-        jugar();
-    }
+        
+    
 
 //                                                        F U N C I O N S  D E L  P E N J A T
 
 
-function esUnaLletra(lletra){ // Funció que comprova que el valor introduït és una lletra
-    let lletraDonada = lletra;
-    if (lletraDonada.match(/[a-z]/i)){ 
-        
-        return true;
-    }else {
-        console.warn("No és una lletra");
-        return false;
-    }
-}
+
 
 function comprovaLletra (lletra,paraula){ //Funció que comprova si la lletra està dins a de la paraula
     let lletraDonada = lletra.toLowerCase();
