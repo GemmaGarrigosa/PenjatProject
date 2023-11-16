@@ -6,12 +6,15 @@ let oculta = "";
 let intents = 6;
 let fallades = 0;
 let p = "";
-
+let utilitzades = "";
 
 
 
 /* Funció que inicialitza el joc del penjat*/
 function novaPartida() {
+    intents = 6;
+    fallades = 0;
+    utilitzades = "";
     let ocultaAmbEspais="";
     let botons = "";
     oculta = "";
@@ -23,6 +26,7 @@ function novaPartida() {
     paraula = prompt("Introdueix una paraula");
 
     dibuixaPenjat(fallades);
+    escriuInfo(fallades,utilitzades);
     
     while ( paraula == null || paraula.length < 1 ) {
        paraula = prompt("Introdueix una paraula"); 
@@ -41,9 +45,7 @@ function novaPartida() {
         p = document.getElementById('jocPenjat');
         p.innerHTML="";
         p.innerHTML = `<p>${ocultaAmbEspais}</p>`;
-        // p = document.createElement("p");
-        // p.innerHTML = ocultaAmbEspais;
-        // document.getElementById('jocPenjat').appendChild(p);
+        
         
         botons = document.getElementById('abecedari'); //agafes el div
         botons.innerHTML = "";
@@ -60,9 +62,10 @@ function novaPartida() {
         
         
 function clickLletra(lletraDonada){ //Funció que executa el joc una vegada 
-    let utilitzades = "";
+    
     lletra = lletraDonada;
     let resultat = "";
+    this.disabled = true; //desactivem botó clicat
     
 
     if (comprovaLletra(lletra,paraula)){ // comprova que la lletra estigui dins la paraula
@@ -71,14 +74,14 @@ function clickLletra(lletraDonada){ //Funció que executa el joc una vegada
         resultat= resultat.join(" "); // juntem l'array en un string mostrant posant un espai entre mig per estètica
 
         //Aqui canviar que p sigui resultat XXXTODO
-        console.log('Aquest es el resultat pocho' + resultat);
+        
         p = document.getElementById('jocPenjat');
         
         p.innerHTML = `<p>${resultat}</p>`;
         
 
             if (noHiHaGuions(oculta)){
-                    console.log("Has guanyat!");
+                    alert("Has guanyat!");
                     guanyades++;
             }
     
@@ -87,13 +90,14 @@ function clickLletra(lletraDonada){ //Funció que executa el joc una vegada
             utilitzades = lletra + "," + utilitzades;
             intents --
             fallades++;
-
+            dibuixaPenjat(fallades);
+            escriuInfo(fallades,utilitzades);
            
            
         } 
 
         if (intents == 0){
-            console.log("Has perdut :(");
+            alert("Has perdut :(");
             perdudes++;
             
         
@@ -101,8 +105,8 @@ function clickLletra(lletraDonada){ //Funció que executa el joc una vegada
 
         
     }
-
-    console.log(`Lletres fallades ${fallades}/6: ${utilitzades.toLowerCase()}`);
+    
+  
 
     
 }
@@ -145,8 +149,8 @@ function EscriuOculta(lletra,paraula,oculta) { //Funció que retorna la paraula 
             continue;
         }
     }
-    console.log('Array oculta ' + ocultaArray );
-    console.log('paraula oculta ' + paraulaOculta);
+   
+    
     
     return ocultaArray;
 }  
@@ -166,15 +170,21 @@ function noHiHaGuions(paraulaOculta){ // Funció que mira si queden guions en la
     return true;
 }
 
+function escriuInfo(fallades,utilitzades){
+    let info = document.getElementById('lletresUtilitzades');
+    info.innerHTML = "";
+    info.innerHTML = `<p>Lletres fallades ${fallades}/6: ${utilitzades.toLowerCase()}</p>`
+}
 
 
 
 //                                                                P A R T  D ' E S T A D I S T I Q U E S
 
 function estadistiques() {
+    let paginaEstadistiques = window.open();
     let total = guanyades + perdudes;
     console.clear();
-    console.log(`Total de partides: ${total} \n Partides guanyades (${calculaPercentatge(total,guanyades)}%): ${guanyades} \n Partides perdudes (${calculaPercentatge(total,perdudes)}%): ${perdudes}`);
+    paginaEstadistiques.document.write(`Total de partides: ${total} </br> Partides guanyades (${calculaPercentatge(total,guanyades)}%): ${guanyades} </br> Partides perdudes (${calculaPercentatge(total,perdudes)}%): ${perdudes}`);
 
 }
 

@@ -5,6 +5,8 @@ body {
 button {
     padding:1em;
     border-radius: 20%;
+    font-size: 20px;
+    margin-bottom: 3em;
 }
 
 .jugar {
@@ -17,5 +19,6 @@ button {
 
 p {
     
-    font-size: 50px;
+    font-size: 70px;
 }
+
